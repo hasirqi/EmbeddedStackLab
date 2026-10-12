@@ -1,0 +1,28 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>学习路线 · EmbeddedStackLab</title><link rel="stylesheet" href="../assets/site.css"></head><body>
+<header class="site-header"><nav class="nav">
+<a class="brand" href="/EmbeddedStackLab/">Embedded<span>Stack</span>Lab</a>
+<div class="nav-links">
+<a class="" href="/EmbeddedStackLab/">首页</a>
+<a class="active" href="/EmbeddedStackLab/roadmap/">学习路线</a>
+<a class="" href="/EmbeddedStackLab/knowledge/">知识体系</a>
+<a class="" href="/EmbeddedStackLab/projects/">项目</a>
+<a class="" href="/EmbeddedStackLab/notes/">学习记录</a>
+<a href="https://github.com/hasirqi/EmbeddedStackLab">GitHub</a>
+</div></nav></header><main class="wrap"><div class="breadcrumb">EmbeddedStackLab / Roadmap</div><h1 class="page-title">学习路线</h1><p class="muted">最终目标不是“看过”，而是能独立开发、读代码、定位问题并解释整个调用链。</p>
+<div class="card"><ol class="goal-list">
+<li>能画出 Linux → Driver → HAL → Android Service 的调用链。</li>
+<li>能自己写并 Debug 一个简单 Linux C/C++ 程序。</li>
+<li>能读懂基本 Kernel Driver 的 <code>probe / remove / ioctl</code>。</li>
+<li>知道 Binder / AIDL / HAL 分别解决什么问题。</li>
+<li>遇到问题会使用 <code>gdb / strace / dmesg / logcat</code> 做 Layer 切分。</li>
+<li>Git 的 branch / rebase / cherry-pick / conflict / code review 不害怕。</li>
+<li>面对几十万行代码，沿 Interface 和 Call Path 追踪，而不是试图全部读完。</li>
+</ol></div>
+<h2 class="section-title">阶段规划</h2>
+<div class="card"><table><tr><th>阶段</th><th>重点</th><th>目标</th></tr>
+<tr><td>Phase 1</td><td>Linux / C / System Call</td><td>Userspace 编程、GDB、strace、文件描述符与系统调用</td></tr>
+<tr><td>Phase 2</td><td>Kernel / Driver</td><td>Device Tree、probe/remove、字符设备、ioctl、I²C/GPIO</td></tr>
+<tr><td>Phase 3</td><td>Android Native</td><td>HAL、Binder、AIDL、Service、SELinux 基础</td></tr>
+<tr><td>Phase 4</td><td>Real Hardware</td><td>开发板、传感器、CAN、故障注入和跨层 Debug</td></tr>
+<tr><td>Phase 5</td><td>Engineering</td><td>Git、Code Review、回归、文档和大型代码追踪</td></tr></table></div>
+</main><footer class="footer"><span>EmbeddedStackLab · Embedded Linux & Android Practical Lab</span><span>Knowledge → Practice → Debug → Real Hardware</span></footer></body></html>
