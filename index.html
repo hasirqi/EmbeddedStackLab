@@ -1,45 +1,56 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>EmbeddedStackLab</title>
-  <style>
-    body{margin:0;background:#f6f8fb;color:#1f2937;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif}
-    .wrap{max-width:900px;margin:auto;padding:48px 22px}
-    .hero{background:linear-gradient(135deg,#0f172a,#1e3a8a);color:#fff;border-radius:22px;padding:34px}
-    .hero h1{margin:0 0 8px}.hero p{color:#dbeafe;margin:0}
-    .card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:24px;margin-top:20px}
-    a{color:#2563eb;text-decoration:none;font-weight:600}
-    a:hover{text-decoration:underline}
-    .meta{color:#667085;font-size:14px}
-    code{background:#eef2ff;padding:2px 6px;border-radius:6px}
-  </style>
-</head>
-<body>
-<div class="wrap">
-  <div class="hero">
-    <h1>EmbeddedStackLab</h1>
-    <p>Embedded Linux & Android 实战学习记录</p>
-  </div>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="EmbeddedStackLab — Embedded Linux & Android 实战学习、知识沉淀与项目开发中心">
+<title>EmbeddedStackLab</title><link rel="stylesheet" href="./assets/site.css"></head><body>
+<header class="site-header"><nav class="nav">
+<a class="brand" href="/EmbeddedStackLab/">Embedded<span>Stack</span>Lab</a>
+<div class="nav-links">
+<a class="active" href="/EmbeddedStackLab/">首页</a>
+<a class="" href="/EmbeddedStackLab/roadmap/">学习路线</a>
+<a class="" href="/EmbeddedStackLab/knowledge/">知识体系</a>
+<a class="" href="/EmbeddedStackLab/projects/">项目</a>
+<a class="" href="/EmbeddedStackLab/notes/">学习记录</a>
+<a href="https://github.com/hasirqi/EmbeddedStackLab">GitHub</a>
+</div></nav></header>
+<main class="wrap">
+<section class="hero">
+<div class="eyebrow">Embedded Linux · Android · Real Hardware</div>
+<h1>EmbeddedStackLab</h1>
+<p>不是单纯的学习笔记，而是一套持续演进的嵌入式软件知识库、项目实验室和工程资料中心。把重要逻辑、架构、代码、调试方法、项目决策和真实硬件实践长期沉淀下来。</p>
+<div class="hero-actions"><a class="btn primary" href="./roadmap/">查看学习路线</a><a class="btn secondary" href="./projects/">进入项目中心</a></div>
+</section>
 
-  <div class="card">
-    <h2>学习目标</h2>
-    <p>从 Linux C/C++、System Call、Kernel Driver，一路学习到 HAL、Binder/AIDL、Android Service 和真实硬件调试。</p>
-  </div>
-
-  <div class="card">
-    <h2>学习笔记</h2>
-    <p><a href="./docs/Linux_Android_Study_Day1_Phase1_2026-10-12.html">Day 1 · 第一阶段：Ubuntu 环境搭建与第一个 Linux C 程序</a></p>
-    <p class="meta">2026-10-12 · Ubuntu 24.04 ARM64 · GCC · GDB · Git · strace · CMake</p>
-  </div>
-
-  <div class="card">
-    <h2>当前进度</h2>
-    <p>✅ Ubuntu 开发环境搭建</p>
-    <p>✅ 第一个 C 程序编译与运行</p>
-    <p>⬜ 下一步：<code>printf → write → system call → Kernel</code></p>
-  </div>
+<h2 class="section-title">核心板块</h2>
+<div class="grid cols-3">
+<div class="card"><div class="kicker">Roadmap</div><h2>学习路线</h2><p>围绕 7 个最终能力目标，记录阶段、里程碑和完成状态。</p><a href="./roadmap/">查看路线 →</a></div>
+<div class="card"><div class="kicker">Knowledge Base</div><h2>知识体系</h2><p>沉淀 System Call、Kernel、Driver、HAL、Binder/AIDL、Debug 等关键逻辑。</p><a href="./knowledge/">进入知识库 →</a></div>
+<div class="card"><div class="kicker">Projects</div><h2>项目中心</h2><p>保存真实项目的架构、接口、硬件、代码、实验、问题和决策。</p><a href="./projects/">查看项目 →</a></div>
+<div class="card"><div class="kicker">Learning Log</div><h2>学习记录</h2><p>按日期保存每天真正完成的实践、命令、代码和问题定位过程。</p><a href="./notes/">查看记录 →</a></div>
+<div class="card"><div class="kicker">Debug Playbook</div><h2>调试方法</h2><p>逐步积累 gdb / strace / dmesg / logcat / 逻辑分析仪的分层诊断方法。</p><a href="./knowledge/#debug">查看调试体系 →</a></div>
+<div class="card"><div class="kicker">Architecture</div><h2>系统架构</h2><p>长期维护 Linux → Driver → HAL → Android Service → Hardware 的调用链与接口关系。</p><a href="./knowledge/#architecture">查看架构 →</a></div>
 </div>
-</body>
-</html>
+
+<h2 class="section-title">当前阶段</h2>
+<div class="grid cols-2">
+<div class="card"><span class="badge ok">Day 1 已开始</span><h2 style="margin-top:12px">Linux 基础开发环境</h2><p>Ubuntu ARM64、GCC、Git、GDB、strace、CMake 已就绪，第一个 C 程序已经完成编译与运行。</p><div class="progress"><span style="width:12%"></span></div><p class="muted small">总体路线约 12%：基础环境和第一个 Userspace 程序已打通。</p></div>
+<div class="card"><h2>当前技术主线</h2><div class="codeflow">C/C++
+  ↓
+glibc / System Call
+  ↓
+Linux Kernel
+  ↓
+Device Driver
+  ↓
+HAL
+  ↓
+Binder / AIDL
+  ↓
+Android Service
+  ↓
+Real Hardware</div></div>
+</div>
+
+<h2 class="section-title">最近更新</h2>
+<div class="card timeline">
+<div class="timeline-item"><div class="timeline-date">2026-10-12</div><div><h3><a href="./notes/day01-phase1.html">Day 1 · 第一阶段</a></h3><p class="muted">Ubuntu 环境搭建、第一个 Linux C 程序、工具链确认，以及复制粘贴异常定位。</p></div></div>
+</div>
+</main><footer class="footer"><span>EmbeddedStackLab · Embedded Linux & Android Practical Lab</span><span>Knowledge → Practice → Debug → Real Hardware</span></footer></body></html>
