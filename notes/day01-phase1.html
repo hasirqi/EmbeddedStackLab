@@ -1,0 +1,37 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Day 1 第一阶段 · EmbeddedStackLab</title><link rel="stylesheet" href="../assets/site.css"></head><body>
+<header class="site-header"><nav class="nav">
+<a class="brand" href="/EmbeddedStackLab/">Embedded<span>Stack</span>Lab</a>
+<div class="nav-links">
+<a class="" href="/EmbeddedStackLab/">首页</a>
+<a class="" href="/EmbeddedStackLab/roadmap/">学习路线</a>
+<a class="" href="/EmbeddedStackLab/knowledge/">知识体系</a>
+<a class="" href="/EmbeddedStackLab/projects/">项目</a>
+<a class="active" href="/EmbeddedStackLab/notes/">学习记录</a>
+<a href="https://github.com/hasirqi/EmbeddedStackLab">GitHub</a>
+</div></nav></header><main class="wrap"><div class="breadcrumb"><a href="./">学习记录</a> / 2026-10-12</div><h1 class="page-title">Day 1 · 第一阶段</h1><p class="muted">Ubuntu 环境搭建与第一个 Linux C 程序</p>
+<div class="card"><h2>今天完成了什么</h2><ul><li>在 Apple Silicon Mac 上安装 Ubuntu ARM64 虚拟机。</li><li>确认系统架构为 <code>aarch64</code>。</li><li>确认 GCC、Git、GDB 正常。</li><li>安装并确认 <code>strace</code> 与 <code>cmake</code>。</li><li>创建 <code>~/linux-study/day01</code>。</li><li>完成第一个 C 程序的编译和运行。</li></ul></div>
+<div class="grid cols-2">
+<div class="card"><h2>当前环境</h2><table><tr><th>项目</th><th>状态</th></tr><tr><td>Guest OS</td><td>Ubuntu 24.04 ARM64</td></tr><tr><td>Architecture</td><td>aarch64</td></tr><tr><td>GCC</td><td>13.3.0</td></tr><tr><td>Git</td><td>2.43.0</td></tr><tr><td>GDB</td><td>15.1</td></tr><tr><td>strace</td><td>6.8</td></tr><tr><td>CMake</td><td>3.28.3</td></tr></table></div>
+<div class="card"><h2>第一个 C 程序</h2><pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    printf("Hello Linux\n");
+    return 0;
+}</code></pre><pre><code>gcc -g -Wall hello.c -o hello
+./hello
+Hello Linux</code></pre></div>
+</div>
+<div class="card"><h2>真实问题：复制粘贴异常</h2><p>Mac → Ubuntu Terminal 粘贴时出现 <code>^[[200~</code> 等控制字符，导致命令被错误解释。</p><div class="callout">通过 <code>which gcc</code> 确认 GCC 实际位于 <code>/usr/bin/gcc</code>，因此问题不在 GCC，而在粘贴输入。</div><div class="callout warn">经验：出现奇怪的控制字符时，先手工输入关键命令验证，不要直接重装软件。</div></div>
+<div class="card"><h2>第一阶段核心逻辑</h2><div class="codeflow">C Source
+  ↓ gcc
+ELF executable
+  ↓ exec
+Linux process
+  ↓
+printf()
+  ↓
+下一阶段：write() / system call / Kernel</div></div>
+<div class="card"><h2>下一步</h2><pre><code>strace ./hello
+strace -e trace=write,exit_group ./hello</code></pre><p>目标：真正观察 <code>printf → write → Kernel</code>。</p></div>
+</main><footer class="footer"><span>EmbeddedStackLab · Embedded Linux & Android Practical Lab</span><span>Knowledge → Practice → Debug → Real Hardware</span></footer></body></html>
