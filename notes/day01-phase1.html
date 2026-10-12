@@ -1,37 +1,356 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Day 1 第一阶段 · EmbeddedStackLab</title><link rel="stylesheet" href="../assets/site.css"></head><body>
-<header class="site-header"><nav class="nav">
-<a class="brand" href="/EmbeddedStackLab/">Embedded<span>Stack</span>Lab</a>
-<div class="nav-links">
-<a class="" href="/EmbeddedStackLab/">首页</a>
-<a class="" href="/EmbeddedStackLab/roadmap/">学习路线</a>
-<a class="" href="/EmbeddedStackLab/knowledge/">知识体系</a>
-<a class="" href="/EmbeddedStackLab/projects/">项目</a>
-<a class="active" href="/EmbeddedStackLab/notes/">学习记录</a>
-<a href="https://github.com/hasirqi/EmbeddedStackLab">GitHub</a>
-</div></nav></header><main class="wrap"><div class="breadcrumb"><a href="./">学习记录</a> / 2026-10-12</div><h1 class="page-title">Day 1 · 第一阶段</h1><p class="muted">Ubuntu 环境搭建与第一个 Linux C 程序</p>
-<div class="card"><h2>今天完成了什么</h2><ul><li>在 Apple Silicon Mac 上安装 Ubuntu ARM64 虚拟机。</li><li>确认系统架构为 <code>aarch64</code>。</li><li>确认 GCC、Git、GDB 正常。</li><li>安装并确认 <code>strace</code> 与 <code>cmake</code>。</li><li>创建 <code>~/linux-study/day01</code>。</li><li>完成第一个 C 程序的编译和运行。</li></ul></div>
-<div class="grid cols-2">
-<div class="card"><h2>当前环境</h2><table><tr><th>项目</th><th>状态</th></tr><tr><td>Guest OS</td><td>Ubuntu 24.04 ARM64</td></tr><tr><td>Architecture</td><td>aarch64</td></tr><tr><td>GCC</td><td>13.3.0</td></tr><tr><td>Git</td><td>2.43.0</td></tr><tr><td>GDB</td><td>15.1</td></tr><tr><td>strace</td><td>6.8</td></tr><tr><td>CMake</td><td>3.28.3</td></tr></table></div>
-<div class="card"><h2>第一个 C 程序</h2><pre><code>#include &lt;stdio.h&gt;
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="EmbeddedStackLab Day 1 第一阶段：Ubuntu ARM64 环境搭建、Linux 工具链、第一个 C 程序、复制粘贴异常定位与下一阶段 System Call 学习。">
+  <title>Day 1 第一阶段 · EmbeddedStackLab</title>
+  <link rel="stylesheet" href="../assets/site.css">
+  <style>
+    .lesson-hero{
+      background:linear-gradient(135deg,#0f172a,#1e3a8a);
+      color:white;border-radius:22px;padding:34px 36px;margin:12px 0 24px;
+      box-shadow:0 14px 40px rgba(15,23,42,.12)
+    }
+    .lesson-hero h1{margin:0 0 10px;font-size:34px;line-height:1.2}
+    .lesson-hero p{margin:6px 0;color:#dbeafe}
+    .tag{
+      display:inline-block;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.12);
+      margin-right:7px;margin-top:8px;font-size:13px
+    }
+    .ok{color:#067647;font-weight:700}
+    .warn{
+      border-left:4px solid #d97706;background:#fffbeb;padding:12px 16px;
+      border-radius:10px;margin:14px 0
+    }
+    .note{
+      border-left:4px solid #2563eb;background:#eff6ff;padding:12px 16px;
+      border-radius:10px;margin:14px 0
+    }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="/EmbeddedStackLab/">Embedded<span>Stack</span>Lab</a>
+    <div class="nav-links">
+      <a href="/EmbeddedStackLab/">首页</a>
+      <a href="/EmbeddedStackLab/roadmap/">学习路线</a>
+      <a href="/EmbeddedStackLab/knowledge/">知识体系</a>
+      <a href="/EmbeddedStackLab/projects/">项目</a>
+      <a class="active" href="/EmbeddedStackLab/notes/">学习记录</a>
+      <a href="https://github.com/hasirqi/EmbeddedStackLab">GitHub</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+  <div class="breadcrumb"><a href="./">学习记录</a> / 2026-10-12 / Day 1 第一阶段</div>
+
+  <div class="lesson-hero">
+    <h1>Linux / Android 实战学习记录</h1>
+    <p><strong>Day 1 · 第一阶段</strong>｜2026-10-12</p>
+    <p>目标：把 Mac 上的 Ubuntu 开发环境真正跑起来，并完成第一个 Linux C 程序的编译与执行。</p>
+    <span class="tag">Ubuntu 24.04 ARM64</span>
+    <span class="tag">VMware Fusion</span>
+    <span class="tag">GCC</span>
+    <span class="tag">GDB</span>
+    <span class="tag">Git</span>
+    <span class="tag">strace</span>
+    <span class="tag">CMake</span>
+  </div>
+
+  <section class="card">
+    <h2>1. 今天完成了什么</h2>
+    <ul>
+      <li><span class="ok">✓</span> 在 Apple Silicon Mac 上安装 Ubuntu ARM64 虚拟机。</li>
+      <li><span class="ok">✓</span> 确认系统架构为 <code>aarch64</code>。</li>
+      <li><span class="ok">✓</span> 确认 GCC、Git、GDB 可正常使用。</li>
+      <li><span class="ok">✓</span> 安装并确认 <code>strace</code> 与 <code>cmake</code>。</li>
+      <li><span class="ok">✓</span> 创建学习目录 <code>~/linux-study</code>。</li>
+      <li><span class="ok">✓</span> 编写、编译并运行第一个 C 程序 <code>hello.c</code>。</li>
+      <li><span class="ok">✓</span> 确认 Linux 开发环境已经具备继续学习 C / Debug / System Call 的条件。</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>2. 当前开发环境</h2>
+    <table>
+      <tr><th>项目</th><th>当前状态</th></tr>
+      <tr><td>宿主机</td><td>Mac Studio / Apple Silicon</td></tr>
+      <tr><td>虚拟化</td><td>VMware Fusion</td></tr>
+      <tr><td>Guest OS</td><td>Ubuntu 24.04 ARM64</td></tr>
+      <tr><td>Kernel</td><td>Linux 7.0.0-38-generic</td></tr>
+      <tr><td>CPU 架构</td><td><code>aarch64</code></td></tr>
+      <tr><td>GCC</td><td>13.3.0</td></tr>
+      <tr><td>Git</td><td>2.43.0</td></tr>
+      <tr><td>GDB</td><td>15.1</td></tr>
+      <tr><td>strace</td><td>6.8</td></tr>
+      <tr><td>CMake</td><td>3.28.3</td></tr>
+    </table>
+  </section>
+
+  <section class="card">
+    <h2>3. 环境确认命令</h2>
+    <p>今天实际确认过的关键命令：</p>
+    <pre><code>uname -a
+gcc --version
+git --version
+gdb --version
+strace --version
+cmake --version</code></pre>
+
+    <p>其中最重要的一项是：</p>
+    <pre><code>aarch64</code></pre>
+    <p>这说明当前 Ubuntu 与 Apple Silicon 的 ARM64 架构匹配。</p>
+  </section>
+
+  <section class="card">
+    <h2>4. 安装与确认基础工具</h2>
+    <p>安装 <code>strace</code> 与 <code>cmake</code> 时使用：</p>
+    <pre><code>sudo apt update
+sudo apt install -y strace cmake</code></pre>
+
+    <p>安装完成后确认版本：</p>
+    <pre><code>strace --version
+cmake --version</code></pre>
+
+    <p>实际确认结果：</p>
+    <pre><code>strace -- version 6.8
+cmake version 3.28.3</code></pre>
+  </section>
+
+  <section class="card">
+    <h2>5. 创建学习目录</h2>
+    <p>建立整个 Linux 学习项目的根目录：</p>
+    <pre><code>mkdir -p ~/linux-study
+cd ~/linux-study</code></pre>
+
+    <p>Day 1 的代码目录：</p>
+    <pre><code>mkdir -p day01
+cd day01</code></pre>
+
+    <p>最终路径：</p>
+    <pre><code>~/linux-study/day01</code></pre>
+  </section>
+
+  <section class="card">
+    <h2>6. 创建第一个 Linux C 程序</h2>
+    <p>创建源码：</p>
+    <pre><code>nano hello.c</code></pre>
+
+    <p>文件内容：</p>
+    <pre><code>#include &lt;stdio.h&gt;
 
 int main(void)
 {
     printf("Hello Linux\n");
     return 0;
-}</code></pre><pre><code>gcc -g -Wall hello.c -o hello
+}</code></pre>
+  </section>
+
+  <section class="card">
+    <h2>7. 第一次编译</h2>
+    <p>编译命令：</p>
+    <pre><code>gcc -g -Wall hello.c -o hello</code></pre>
+
+    <table>
+      <tr><th>参数</th><th>作用</th></tr>
+      <tr><td><code>-g</code></td><td>加入 Debug 信息，后续可以用 GDB 调试。</td></tr>
+      <tr><td><code>-Wall</code></td><td>打开常用编译警告。</td></tr>
+      <tr><td><code>-o hello</code></td><td>指定输出可执行文件名称为 <code>hello</code>。</td></tr>
+    </table>
+
+    <p>编译成功后没有错误输出，这是正常的。</p>
+  </section>
+
+  <section class="card">
+    <h2>8. 第一次运行</h2>
+    <p>执行：</p>
+    <pre><code>./hello</code></pre>
+
+    <p>实际输出：</p>
+    <pre><code>Hello Linux</code></pre>
+
+    <div class="note">
+      这是第一个完整的 Linux 开发闭环：写源码 → GCC 编译 → 生成可执行文件 → Linux 启动进程 → 程序输出结果。
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>9. 今天遇到的真实问题：复制粘贴异常</h2>
+    <p>从 Mac 向 Ubuntu Terminal 粘贴命令时，出现过类似：</p>
+    <pre><code>^[[200~gcc -g -Wall hello.c -o hello~</code></pre>
+
+    <p>这会让 Shell 把控制字符也当成命令的一部分，从而出现：</p>
+    <pre><code>gcc: command not found</code></pre>
+
+    <p>为了确认 GCC 本身是否正常，实际执行过：</p>
+    <pre><code>which gcc</code></pre>
+
+    <p>返回：</p>
+    <pre><code>/usr/bin/gcc</code></pre>
+
+    <p>进一步检查：</p>
+    <pre><code>ls -l /usr/bin/gcc</code></pre>
+
+    <p>实际返回：</p>
+    <pre><code>lrwxrwxrwx 1 root root 6 Jan 31  2024 /usr/bin/gcc -> gcc-13</code></pre>
+
+    <p>同时检查 PATH：</p>
+    <pre><code>echo $PATH</code></pre>
+
+    <p>实际结果：</p>
+    <pre><code>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin</code></pre>
+
+    <div class="note">
+      <strong>结论：</strong>GCC 没有问题，PATH 也没有问题。真正的问题是复制粘贴时混入了 Terminal 的 bracketed paste 控制字符。
+    </div>
+
+    <div class="warn">
+      以后如果再次出现 <code>^[[200~</code> 或命令结尾多出 <code>~</code>，先手工输入关键命令验证，不要因为一条错误信息就急着重装软件。
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>10. GCC 路径确认过程</h2>
+    <p>今天还实际使用了：</p>
+    <pre><code>which gcc</code></pre>
+
+    <p>这个命令用于确认当前 Shell 最终会调用哪个 GCC。</p>
+
+    <p>返回：</p>
+    <pre><code>/usr/bin/gcc</code></pre>
+
+    <p>说明：</p>
+    <div class="codeflow">Shell
+  ↓ PATH 搜索
+/usr/bin/gcc
+  ↓ symbolic link
+gcc-13</div>
+  </section>
+
+  <section class="card">
+    <h2>11. 第一阶段已经建立的核心认识</h2>
+    <p>今天还没有深入 Kernel Driver，但已经跑通最基本的 Linux 开发闭环：</p>
+
+    <div class="codeflow">写 C 代码
+   ↓
+gcc 编译
+   ↓
+生成 ELF 可执行文件
+   ↓
+Linux 启动程序
+   ↓
+程序执行
+   ↓
+终端看到输出</div>
+
+    <p>下一阶段要继续把这条链向下拆：</p>
+
+    <div class="codeflow">printf()
+   ↓
+glibc
+   ↓
+system call
+   ↓
+write()
+   ↓
+Linux Kernel</div>
+
+    <p>主要观察工具：</p>
+    <pre><code>strace</code></pre>
+  </section>
+
+  <section class="card">
+    <h2>12. 下一阶段准备执行的命令</h2>
+    <p>完整观察程序：</p>
+    <pre><code>strace ./hello</code></pre>
+
+    <p>只看关键 System Call：</p>
+    <pre><code>strace -e trace=write,exit_group ./hello</code></pre>
+
+    <p>目标是实际看到类似：</p>
+    <pre><code>write(1, "Hello Linux\n", 12) = 12
+exit_group(0) = ?</code></pre>
+
+    <p>并真正理解：</p>
+
+    <div class="codeflow">printf("Hello Linux\n")
+        ↓
+glibc
+        ↓
+write(...)
+        ↓
+System Call
+        ↓
+Linux Kernel</div>
+  </section>
+
+  <section class="card">
+    <h2>13. 第一阶段验收</h2>
+    <table>
+      <tr><th>验收项</th><th>结果</th></tr>
+      <tr><td>Ubuntu 能正常启动</td><td class="ok">PASS</td></tr>
+      <tr><td>ARM64 架构正确</td><td class="ok">PASS</td></tr>
+      <tr><td>GCC 可用</td><td class="ok">PASS</td></tr>
+      <tr><td>Git 可用</td><td class="ok">PASS</td></tr>
+      <tr><td>GDB 可用</td><td class="ok">PASS</td></tr>
+      <tr><td>strace 可用</td><td class="ok">PASS</td></tr>
+      <tr><td>CMake 可用</td><td class="ok">PASS</td></tr>
+      <tr><td>第一个 C 程序成功编译</td><td class="ok">PASS</td></tr>
+      <tr><td>第一个 C 程序成功执行</td><td class="ok">PASS</td></tr>
+      <tr><td>能够通过 which / PATH 判断 gcc 是否真实存在</td><td class="ok">PASS</td></tr>
+      <tr><td>已经识别 Terminal 粘贴控制字符问题</td><td class="ok">PASS</td></tr>
+    </table>
+  </section>
+
+  <section class="card">
+    <h2>14. Day 1 第一阶段命令总表</h2>
+    <p>今天已经学习、执行或用于排查的命令，完整保留如下：</p>
+    <pre><code>uname -a
+
+gcc --version
+
+git --version
+
+gdb --version
+
+mkdir -p ~/linux-study
+cd ~/linux-study
+
+strace --version
+cmake --version
+
+sudo apt update
+sudo apt install -y strace cmake
+
+mkdir -p day01
+cd day01
+
+nano hello.c
+
+which gcc
+ls -l /usr/bin/gcc
+echo $PATH
+
+gcc -g -Wall hello.c -o hello
+
 ./hello
-Hello Linux</code></pre></div>
-</div>
-<div class="card"><h2>真实问题：复制粘贴异常</h2><p>Mac → Ubuntu Terminal 粘贴时出现 <code>^[[200~</code> 等控制字符，导致命令被错误解释。</p><div class="callout">通过 <code>which gcc</code> 确认 GCC 实际位于 <code>/usr/bin/gcc</code>，因此问题不在 GCC，而在粘贴输入。</div><div class="callout warn">经验：出现奇怪的控制字符时，先手工输入关键命令验证，不要直接重装软件。</div></div>
-<div class="card"><h2>第一阶段核心逻辑</h2><div class="codeflow">C Source
-  ↓ gcc
-ELF executable
-  ↓ exec
-Linux process
-  ↓
-printf()
-  ↓
-下一阶段：write() / system call / Kernel</div></div>
-<div class="card"><h2>下一步</h2><pre><code>strace ./hello
-strace -e trace=write,exit_group ./hello</code></pre><p>目标：真正观察 <code>printf → write → Kernel</code>。</p></div>
-</main><footer class="footer"><span>EmbeddedStackLab · Embedded Linux & Android Practical Lab</span><span>Knowledge → Practice → Debug → Real Hardware</span></footer></body></html>
+
+strace ./hello
+
+strace -e trace=write,exit_group ./hello</code></pre>
+
+    <div class="note">
+      以后学习记录页的规则：<strong>所有实际学过、执行过、用于验证或 Debug 的命令都完整保留，不为了页面简洁而删除。</strong>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <span>EmbeddedStackLab · Day 1 Phase 1 · 2026-10-12</span>
+  <span>Knowledge → Practice → Debug → Real Hardware</span>
+</footer>
+</body>
+</html>
