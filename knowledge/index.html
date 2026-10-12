@@ -1,0 +1,37 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>知识体系 · EmbeddedStackLab</title><link rel="stylesheet" href="../assets/site.css"></head><body>
+<header class="site-header"><nav class="nav">
+<a class="brand" href="/EmbeddedStackLab/">Embedded<span>Stack</span>Lab</a>
+<div class="nav-links">
+<a class="" href="/EmbeddedStackLab/">首页</a>
+<a class="" href="/EmbeddedStackLab/roadmap/">学习路线</a>
+<a class="active" href="/EmbeddedStackLab/knowledge/">知识体系</a>
+<a class="" href="/EmbeddedStackLab/projects/">项目</a>
+<a class="" href="/EmbeddedStackLab/notes/">学习记录</a>
+<a href="https://github.com/hasirqi/EmbeddedStackLab">GitHub</a>
+</div></nav></header><main class="wrap"><div class="breadcrumb">EmbeddedStackLab / Knowledge Base</div><h1 class="page-title">知识体系</h1><p class="muted">这里只保存值得长期复用的概念、逻辑、架构、调试方法和工程经验。</p>
+<div class="grid cols-2">
+<div class="card" id="architecture"><div class="kicker">Architecture</div><h2>系统调用链</h2><div class="codeflow">Android App
+  ↓
+Android Service
+  ↓
+Binder / AIDL
+  ↓
+HAL
+  ↓
+open / read / write / ioctl
+  ↓
+Linux Kernel
+  ↓
+Device Driver
+  ↓
+Hardware</div></div>
+<div class="card"><div class="kicker">Linux</div><h2>Userspace → Kernel</h2><p><code>printf()</code> 并不直接控制硬件。真正重要的是理解 libc、system call、VFS、file descriptor 与 Kernel 边界。</p></div>
+<div class="card"><div class="kicker">Driver</div><h2>Kernel Driver</h2><p>后续沉淀 <code>probe</code>、<code>remove</code>、<code>file_operations</code>、<code>ioctl</code>、Device Tree、I²C/SPI/GPIO 等。</p></div>
+<div class="card"><div class="kicker">Android</div><h2>HAL / Binder / AIDL</h2><p>重点不是背术语，而是理解每一层解决的边界问题、接口约束和跨进程调用链。</p></div>
+<div class="card" id="debug"><div class="kicker">Debug</div><h2>Layer 切分</h2><p>建立统一方法：先判断问题在哪一层，再选择工具，而不是从头到尾乱查。</p><pre><code>gdb     → 进程内部
+strace  → Userspace / Kernel 边界
+dmesg   → Kernel / Driver
+logcat  → Android Framework / Service / HAL</code></pre></div>
+<div class="card"><div class="kicker">Engineering</div><h2>大型代码阅读</h2><p>原则：先找 Interface，再找入口，再沿 Call Path 追踪。不要试图“把几十万行代码全部读完”。</p></div>
+</div>
+</main><footer class="footer"><span>EmbeddedStackLab · Embedded Linux & Android Practical Lab</span><span>Knowledge → Practice → Debug → Real Hardware</span></footer></body></html>
