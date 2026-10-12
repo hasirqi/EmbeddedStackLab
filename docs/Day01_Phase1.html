@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Linux / Android 实战学习记录｜Day 1 第一阶段</title>
+  <style>
+    :root{
+      --bg:#f6f8fb; --card:#ffffff; --text:#1f2937; --muted:#667085;
+      --line:#e5e7eb; --accent:#2563eb; --accent2:#0f766e; --code:#0b1020;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB",
+      "Microsoft YaHei",Arial,sans-serif; line-height:1.7;
+    }
+    .wrap{max-width:980px;margin:0 auto;padding:36px 22px 60px}
+    .hero{
+      background:linear-gradient(135deg,#0f172a,#1e3a8a);
+      color:white;border-radius:22px;padding:34px 36px;margin-bottom:24px;
+      box-shadow:0 14px 40px rgba(15,23,42,.16)
+    }
+    .hero h1{margin:0 0 10px;font-size:32px;line-height:1.25}
+    .hero p{margin:6px 0;color:#dbeafe}
+    .tag{
+      display:inline-block;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.12);
+      margin-right:7px;margin-top:8px;font-size:13px
+    }
+    section{
+      background:var(--card);border:1px solid var(--line);border-radius:18px;
+      padding:26px 28px;margin:18px 0;box-shadow:0 5px 20px rgba(15,23,42,.04)
+    }
+    h2{font-size:22px;margin:0 0 14px;color:#111827}
+    h3{font-size:17px;margin:22px 0 8px}
+    .ok{color:var(--accent2);font-weight:700}
+    .note{
+      border-left:4px solid var(--accent);background:#eff6ff;padding:12px 16px;
+      border-radius:10px;margin:14px 0
+    }
+    .warn{
+      border-left:4px solid #d97706;background:#fffbeb;padding:12px 16px;
+      border-radius:10px;margin:14px 0
+    }
+    pre{
+      background:var(--code);color:#e5e7eb;padding:16px 18px;border-radius:12px;
+      overflow:auto;line-height:1.55;font-size:14px
+    }
+    code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+    table{width:100%;border-collapse:collapse;margin:12px 0}
+    th,td{border-bottom:1px solid var(--line);padding:11px 10px;text-align:left;vertical-align:top}
+    th{background:#f9fafb}
+    .checklist li{margin:7px 0}
+    .footer{color:var(--muted);text-align:center;font-size:13px;margin-top:30px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>Linux / Android 实战学习记录</h1>
+    <p><strong>Day 1 · 第一阶段</strong>｜2026-10-12</p>
+    <p>目标：把 Mac 上的 Ubuntu 开发环境真正跑起来，并完成第一个 Linux C 程序的编译与执行。</p>
+    <span class="tag">Ubuntu 24.04 ARM64</span>
+    <span class="tag">VMware Fusion</span>
+    <span class="tag">GCC</span>
+    <span class="tag">GDB</span>
+    <span class="tag">Git</span>
+    <span class="tag">strace</span>
+  </div>
+
+  <section>
+    <h2>1. 今天完成了什么</h2>
+    <ul class="checklist">
+      <li><span class="ok">✓</span> 在 Apple Silicon Mac 上安装 Ubuntu ARM64 虚拟机。</li>
+      <li><span class="ok">✓</span> 确认系统架构为 <code>aarch64</code>。</li>
+      <li><span class="ok">✓</span> 确认 GCC、Git、GDB 可正常使用。</li>
+      <li><span class="ok">✓</span> 安装并确认 <code>strace</code> 与 <code>cmake</code>。</li>
+      <li><span class="ok">✓</span> 创建学习目录 <code>~/linux-study</code>。</li>
+      <li><span class="ok">✓</span> 编写、编译并运行第一个 C 程序 <code>hello.c</code>。</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>2. 当前开发环境</h2>
+    <table>
+      <tr><th>项目</th><th>当前状态</th></tr>
+      <tr><td>宿主机</td><td>Mac Studio / Apple Silicon</td></tr>
+      <tr><td>虚拟化</td><td>VMware Fusion</td></tr>
+      <tr><td>Guest OS</td><td>Ubuntu 24.04 ARM64</td></tr>
+      <tr><td>Kernel</td><td>Linux 7.0.0-38-generic</td></tr>
+      <tr><td>CPU 架构</td><td><code>aarch64</code></td></tr>
+      <tr><td>GCC</td><td>13.3.0</td></tr>
+      <tr><td>Git</td><td>2.43.0</td></tr>
+      <tr><td>GDB</td><td>15.1</td></tr>
+      <tr><td>strace</td><td>6.8</td></tr>
+      <tr><td>CMake</td><td>3.28.3</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>3. 第一个 Linux C 程序</h2>
+    <pre><code>#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    printf("Hello Linux\n");
+    return 0;
+}</code></pre>
+
+    <h3>编译</h3>
+    <pre><code>gcc -g -Wall hello.c -o hello</code></pre>
+
+    <h3>运行</h3>
+    <pre><code>./hello
+Hello Linux</code></pre>
+  </section>
+
+  <section>
+    <h2>4. 今天遇到的真实问题</h2>
+    <p>从 Mac 向 Ubuntu Terminal 粘贴命令时曾出现 <code>^[[200~</code> 等控制字符。</p>
+    <div class="note">
+      GCC 本身没有问题，<code>which gcc</code> 返回 <code>/usr/bin/gcc</code>。真正的问题是粘贴时混入了终端控制字符。
+    </div>
+  </section>
+
+  <section>
+    <h2>5. 第一阶段核心认识</h2>
+    <pre><code>写 C 代码
+   ↓
+gcc 编译
+   ↓
+生成 ELF 可执行文件
+   ↓
+Linux 启动程序
+   ↓
+程序执行
+   ↓
+终端看到输出</code></pre>
+  </section>
+
+  <section>
+    <h2>6. 下一阶段</h2>
+    <pre><code>strace ./hello
+
+strace -e trace=write,exit_group ./hello</code></pre>
+    <p>目标：开始理解 <code>printf()</code> → <code>write()</code> → Linux Kernel 的调用链。</p>
+  </section>
+
+  <div class="footer">
+    EmbeddedStackLab · Day 1 Phase 1 · 2026-10-12
+  </div>
+</div>
+</body>
+</html>
